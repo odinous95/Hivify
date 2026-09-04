@@ -1,5 +1,6 @@
 using Association.Application;
 using Association.Application.Contracts;
+using Association.Infrastructure;
 using Association.Infrastructure.Persistence;
 using BuildingBlocks.ApplicationPorts.CurrentUserProvider;
 using BuildingBlocks.ApplicationPorts.Messeging;
@@ -30,7 +31,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-
+builder.Services.AddSwaggerGen();
 #endregion
 
 
@@ -46,10 +47,6 @@ builder.Services.AddDbContextFactory<HouseDbContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
-builder.Services.AddDbContextFactory<AssociationDbContext>(options =>
-{
-    options.UseSqlServer(connectionString);
-});
 
 builder.Services.AddDbContextFactory<FeedDbContext>(options =>
 {
@@ -112,9 +109,7 @@ builder.Services.AddSingleton<
 #region Infrastructure
 
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddScoped<ICurrentUser, CurrentUserProvider>();
-
 builder.Services.AddScoped<IFeedRepo, FeedRepo>();
 builder.Services.AddScoped<IComplaintRepo, ComplaintRepo>();
 builder.Services.AddScoped<IAssociationRepo, AssociationRepo>();
@@ -128,16 +123,19 @@ builder.Services.AddScoped<IHouseRepo, HouseRepo>();
 builder.Services.AddScoped<ISender, Sender>();
 builder.Services.AddScoped<IQuerySender, QuerySender>();
 
+
 builder.Services.AddFeedServices();
 builder.Services.AddHouseServices();
 builder.Services.AddUserMgmtServices();
-builder.Services.AddAssociationServices();
 builder.Services.AddComplaintServices();
 builder.Services.AddDocumentServices();
 
 #endregion
 
 
+
+builder.Services.AddAssociationServices();
+builder.Services.AddAssociationInfrastructure(connectionString);
 #region Storage
 
 builder.Services.Configure<CloudinaryOptions>(
@@ -163,7 +161,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 

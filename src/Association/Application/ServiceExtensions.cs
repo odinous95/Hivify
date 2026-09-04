@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Association.Application;
 
-public static class ServiceCollectionExtensions
+public static class ServiceExtensions
 {
     extension(IServiceCollection services)
     {
