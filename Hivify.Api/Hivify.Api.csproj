@@ -20,7 +20,6 @@
 		<ProjectReference Include="..\BuildingBlocks\BuildingBlocks.csproj" />
 		<ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
 		<ProjectReference Include="..\Hivify.AI\Hivify.AI.csproj" />
-		<ProjectReference Include="..\ServiceDefaults1\ServiceDefaults.csproj" />
 
 		<ProjectReference Include="..\src\Association\Application\Association.Application.csproj" />
 		<ProjectReference Include="..\src\Association\Infrastructure\Association.Infrastructure.csproj" />

@@ -31,10 +31,8 @@
     <Project Path="src/UserMgmt/UserMgmt.Application/UserMgmt.Application.csproj" />
     <Project Path="src/UserMgmt/UserMgmt.Infrastructure/UserMgmt.Infrastructure.csproj" />
   </Folder>
-  <Project Path="AppHost1/AppHost.csproj" />
   <Project Path="BuildingBlocks/BuildingBlocks.csproj" Id="13b67b05-8a26-45f2-98f5-2c21f4070ade" />
   <Project Path="Hivify.AI/Hivify.AI.csproj" />
   <Project Path="Hivify.Api/Hivify.Api.csproj" Id="74f6a290-9423-4985-b768-e2f9143a49ac" />
-  <Project Path="ServiceDefaults1/ServiceDefaults.csproj" />
   <Project Path="SharedKernel/SharedKernel.csproj" Id="9432ab2b-f2fd-4ad8-811f-99bbe4cc1c27" />
 </Solution>
