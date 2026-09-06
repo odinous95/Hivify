@@ -1,4 +1,5 @@
 using Association.Application.Contracts;
+using Association.Application.DTOs;
 using BuildingBlocks.ApplicationPorts.Messeging;
 
 namespace Association.Application.Queries.GetAssociations;
@@ -17,19 +18,28 @@ public sealed class GetAssociationsQueryHandler
     }
 
     public async Task<IReadOnlyList<AssociationListItem>> Handle(
-        GetAssociationsQuery query,
-        CancellationToken cancellationToken)
+       GetAssociationsQuery query,
+       CancellationToken cancellationToken)
     {
         var associations =
             await _associationRepository.GetAllAsync(
                 cancellationToken);
 
         return associations
-            .Select(AssociationEntity =>
+            .Select(association =>
                 new AssociationListItem
                 {
-                    Id = AssociationEntity.Id.Value,
-                    Name = AssociationEntity.Name.Value
+                    Id = association.Id.Value,
+                    Name = association.Name.Value,
+
+                    StaffMembers = association.StaffMembers
+                        .Where(member => member.DeletedAt == null)
+                        .Select(member => new StaffMemberItem(
+                            member.Id.Value,
+                            member.FullName.Value,
+                            member.Email.Value,
+                            member.Role))
+                        .ToList()
                 })
             .ToList();
     }
