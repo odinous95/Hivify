@@ -9,6 +9,7 @@ public sealed class Sender(IServiceProvider serviceProvider) : ISender
         CancellationToken cancellationToken = default)
     {
         var handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResponse));
+
         var handler = serviceProvider.GetService(handlerType)
             ?? throw new InvalidOperationException($"No command handler registered for {command.GetType().Name}.");
 
@@ -16,6 +17,7 @@ public sealed class Sender(IServiceProvider serviceProvider) : ISender
             ?? throw new InvalidOperationException($"No Handle method found for {handlerType.Name}.");
 
         var task = (Task<TResponse>?)handleMethod.Invoke(handler, new object[] { command, cancellationToken });
+
         return task is null ? throw new InvalidOperationException($"Handler for {command.GetType().Name} returned no task.") : await task;
     }
 }

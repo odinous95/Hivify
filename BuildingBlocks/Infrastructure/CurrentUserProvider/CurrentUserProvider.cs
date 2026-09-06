@@ -4,11 +4,11 @@ using System.Security.Claims;
 
 namespace BuildingBlocks.Infrastructure.CurrentUserProvider;
 
-public sealed class CurrentUserProvider : ICurrentUser
+public sealed class CurrentUser : ICurrentUser
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CurrentUserProvider(
+    public CurrentUser(
         IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
