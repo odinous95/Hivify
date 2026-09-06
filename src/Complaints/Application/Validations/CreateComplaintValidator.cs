@@ -1,7 +1,7 @@
 ﻿using Complaints.Application.Commands.CreateComplaint;
 using FluentValidation;
 
-namespace Complaints.Application.Validators;
+namespace Complaints.Application.Validations;
 
 public sealed class CreateComplaintCommandValidator
     : AbstractValidator<CreateComplaintCommand>
