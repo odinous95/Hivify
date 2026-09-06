@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using UserMgmt.Application.Contracts;
+using UserMgmt.Application.DTOs;
 
 namespace UserMgmt.Infrastructure.Presistence;
 

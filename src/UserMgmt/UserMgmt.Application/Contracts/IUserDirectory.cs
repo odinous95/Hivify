@@ -1,4 +1,6 @@
-﻿namespace UserMgmt.Application.Contracts;
+﻿using UserMgmt.Application.DTOs;
+
+namespace UserMgmt.Application.Contracts;
 
 public interface IUserDirectory
 {

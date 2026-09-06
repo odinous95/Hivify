@@ -11,9 +11,7 @@ using Houses.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserMgmt.Application;
-using UserMgmt.Application.Contracts;
-using UserMgmt.Infrastructure.Identity;
-using UserMgmt.Infrastructure.Presistence;
+using UserMgmt.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,15 +31,7 @@ var connectionString =
         "Connection string 'DefaultConnection' not found.");
 
 
-
-builder.Services.AddDbContextFactory<UserManagementDbContext>(options =>
-{
-    options.UseSqlServer(connectionString);
-});
-
 #endregion
-
-
 
 
 #region Authentication & Authorization
@@ -58,40 +48,16 @@ builder.Services.AddAuthorization();
 #endregion
 
 
-#region Identity
-
-builder.Services
-    .AddIdentityCore<ApplicationUser>(options =>
-    {
-        options.SignIn.RequireConfirmedAccount = true;
-
-        options.Stores.SchemaVersion =
-            IdentitySchemaVersions.Version3;
-    })
-    .AddRoles<IdentityRole<Guid>>()
-    .AddEntityFrameworkStores<UserManagementDbContext>()
-    .AddSignInManager()
-    .AddDefaultTokenProviders();
-
-builder.Services.AddScoped<IUserDirectory, UserDirectory>();
-
-builder.Services.AddSingleton<
-    IEmailSender<ApplicationUser>,
-    IdentityNoOpEmailSender>();
-
-#endregion
-
-
 #region Building Blocks
 builder.Services.AddBuildingBlocks(builder.Configuration);
 
-#endregion
 
 
-#region Application
-
-
+// User Management
 builder.Services.AddUserMgmtServices();
+builder.Services.AddUserMgmtInfrastructure(connectionString);
+
+// Documents
 builder.Services.AddDocumentServices();
 
 //Complaints
@@ -110,8 +76,6 @@ builder.Services.AddAssociationServices();
 builder.Services.AddAssociationInfrastructure(connectionString);
 
 #endregion
-
-
 
 
 #region AI
