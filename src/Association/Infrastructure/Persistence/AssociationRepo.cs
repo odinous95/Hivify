@@ -28,6 +28,7 @@ public sealed class AssociationRepo : IAssociationRepo
         CancellationToken cancellationToken)
     {
         return await _dbContext.Associations
+            .Include(a => a.StaffMembers)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }

@@ -39,12 +39,13 @@ namespace Association.Infrastructure.Persistence
                         name => name.Value,
                         value => new Name(value));
 
-                builder.HasMany<Member>("_members")
+                builder.HasMany(a => a.StaffMembers)
                     .WithOne()
                     .HasForeignKey(m => m.AssociationId)
                     .OnDelete(DeleteBehavior.Cascade);
 
-                builder.Navigation("_members")
+                builder.Navigation(a => a.StaffMembers)
+                    .HasField("_members")
                     .UsePropertyAccessMode(PropertyAccessMode.Field);
             });
 
