@@ -33,7 +33,7 @@ namespace UserMgmt.Infrastructure
             .AddSignInManager()
             .AddDefaultTokenProviders();
 
-
+                services.AddScoped<IUserIdentityService, IdentityService>();
                 services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
                 services.AddScoped<IUserDirectory, UserDirectory>();
 
