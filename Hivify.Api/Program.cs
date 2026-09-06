@@ -1,23 +1,13 @@
 using Association.Application;
-using Association.Application.Contracts;
 using Association.Infrastructure;
-using Association.Infrastructure.Persistence;
-using BuildingBlocks.ApplicationPorts.CurrentUserProvider;
-using BuildingBlocks.ApplicationPorts.Messeging;
-using BuildingBlocks.Infrastructure.CurrentUserProvider;
-using BuildingBlocks.Infrastructure.Messeging;
-using BuildingBlocks.Infrastructure.Storage;
-using BuildingBlocks.Infrastructure.Storage.CloudinaryStorage;
+using BuildingBlocks.Infrastructure;
 using Complaints.Application;
-using Complaints.Application.Contracts;
-using Complaints.Infrastructure.Presistence;
+using Complaints.Infrastructure;
 using DocumentsMgmt.Application;
 using Feeds.Application;
-using Feeds.Application.Contracts;
-using Feeds.Infrastructure.Presistence;
+using Feeds.Infrastructure;
 using Houses.Application;
-using Houses.Application.Contracts;
-using Houses.Infrastructure.Presistence;
+using Houses.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserMgmt.Application;
@@ -42,21 +32,7 @@ var connectionString =
     ?? throw new InvalidOperationException(
         "Connection string 'DefaultConnection' not found.");
 
-builder.Services.AddDbContextFactory<HouseDbContext>(options =>
-{
-    options.UseSqlServer(connectionString);
-});
 
-
-builder.Services.AddDbContextFactory<FeedDbContext>(options =>
-{
-    options.UseSqlServer(connectionString);
-});
-
-builder.Services.AddDbContextFactory<ComplaintDbContext>(options =>
-{
-    options.UseSqlServer(connectionString);
-});
 
 builder.Services.AddDbContextFactory<UserManagementDbContext>(options =>
 {
@@ -106,44 +82,36 @@ builder.Services.AddSingleton<
 #endregion
 
 
-#region Infrastructure
-
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ICurrentUser, CurrentUserProvider>();
-builder.Services.AddScoped<IFeedRepo, FeedRepo>();
-builder.Services.AddScoped<IComplaintRepo, ComplaintRepo>();
-builder.Services.AddScoped<IAssociationRepo, AssociationRepo>();
-builder.Services.AddScoped<IHouseRepo, HouseRepo>();
+#region Building Blocks
+builder.Services.AddBuildingBlocks(builder.Configuration);
 
 #endregion
 
 
 #region Application
 
-builder.Services.AddScoped<ISender, Sender>();
-builder.Services.AddScoped<IQuerySender, QuerySender>();
 
-
-builder.Services.AddFeedServices();
-builder.Services.AddHouseServices();
 builder.Services.AddUserMgmtServices();
-builder.Services.AddComplaintServices();
 builder.Services.AddDocumentServices();
 
-#endregion
+//Complaints
+builder.Services.AddComplaintServices();
+builder.Services.AddComplaintsInfrastructure(connectionString);
 
+// Houses
+builder.Services.AddHouseServices();
+builder.Services.AddHousesInfrastructure(connectionString);
 
-
+// Feed
+builder.Services.AddFeedServices();
+builder.Services.AddFeedInfrastructure(connectionString);
+// Association
 builder.Services.AddAssociationServices();
 builder.Services.AddAssociationInfrastructure(connectionString);
-#region Storage
-
-builder.Services.Configure<CloudinaryOptions>(
-    builder.Configuration.GetSection("Cloudinary"));
-
-builder.Services.AddStorageServices();
 
 #endregion
+
+
 
 
 #region AI
