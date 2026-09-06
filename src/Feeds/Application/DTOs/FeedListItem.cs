@@ -1,4 +1,4 @@
-﻿namespace Feeds.Application.Contracts;
+﻿namespace Feeds.Application.DTOs;
 
 public sealed record FeedListItem(
     Guid Id,

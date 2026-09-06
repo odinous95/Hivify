@@ -1,5 +1,5 @@
 using BuildingBlocks.ApplicationPorts.Messeging;
-using Complaints.Application.Contracts;
+using Complaints.Application.DTOs;
 
 namespace Complaints.Application.Queries.GetComplaint;
 

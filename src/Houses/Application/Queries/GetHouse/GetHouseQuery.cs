@@ -1,5 +1,5 @@
 ﻿using BuildingBlocks.ApplicationPorts.Messeging;
-using Houses.Application.Contracts;
+using Houses.Application.DTOs;
 
 namespace Houses.Application.Queries.GetHouse;
 

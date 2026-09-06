@@ -1,6 +1,6 @@
 using Complaints.Domain;
 
-namespace Complaints.Application.Contracts;
+namespace Complaints.Application.DTOs;
 
 public sealed record ComplaintListItem(
     Guid Id,

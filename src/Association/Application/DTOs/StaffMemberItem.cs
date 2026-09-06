@@ -1,6 +1,6 @@
 using Association.Domain.Members;
 
-namespace Association.Application.Contracts
+namespace Association.Application.DTOs
 {
     public sealed record StaffMemberItem(
         Guid Id,

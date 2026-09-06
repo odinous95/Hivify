@@ -1,7 +1,7 @@
 using BuildingBlocks.ApplicationPorts.Messeging;
 using Complaints.Application.Commands.CreateComplaint;
 using Complaints.Application.Commands.UpdateComplaintStatus;
-using Complaints.Application.Contracts;
+using Complaints.Application.DTOs;
 using Complaints.Application.Queries.GetComplaint;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

@@ -2,7 +2,7 @@
 using Feeds.Application.Commands.CreateFeed;
 using Feeds.Application.Commands.DeleteFeed;
 using Feeds.Application.Commands.UpdateFeed;
-using Feeds.Application.Contracts;
+using Feeds.Application.DTOs;
 using Feeds.Application.Queries.GetFeeds;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

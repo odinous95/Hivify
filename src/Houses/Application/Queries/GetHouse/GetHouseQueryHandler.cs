@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.ApplicationPorts.Messeging;
 using Houses.Application.Contracts;
+using Houses.Application.DTOs;
 using Houses.Domain.Houses;
 
 namespace Houses.Application.Queries.GetHouse;

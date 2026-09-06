@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.ApplicationPorts.Messeging;
 using Feeds.Application.Contracts;
+using Feeds.Application.DTOs;
 
 namespace Feeds.Application.Queries.GetFeeds;
 

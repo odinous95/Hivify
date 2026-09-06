@@ -2,7 +2,7 @@ using Association.Application.Commands.AddAssociation;
 using Association.Application.Commands.AddStaffMember;
 using Association.Application.Commands.RemoveStaffMember;
 using Association.Application.Commands.UpdateStaffMemberRole;
-using Association.Application.Contracts;
+using Association.Application.DTOs;
 using Association.Application.Queries.GetAssociation;
 using Association.Application.Queries.GetAssociations;
 using Association.Domain.Associations;

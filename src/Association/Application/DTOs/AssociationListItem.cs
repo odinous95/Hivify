@@ -1,4 +1,4 @@
-namespace Association.Application.Contracts;
+namespace Association.Application.DTOs;
 
 public sealed class AssociationListItem
 {

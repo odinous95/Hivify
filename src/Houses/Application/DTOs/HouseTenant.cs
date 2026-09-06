@@ -1,4 +1,4 @@
-﻿namespace Houses.Application.Contracts;
+﻿namespace Houses.Application.DTOs;
 
 public sealed record HouseTenant(
     Guid Id,
