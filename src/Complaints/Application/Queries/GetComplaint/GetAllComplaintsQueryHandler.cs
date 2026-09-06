@@ -26,7 +26,7 @@ namespace Complaints.Application.Queries.GetComplaint
                     c.Id.Value,
                     c.Title.Value,
                     c.Description.Value,
-                    c.Category,
+                    c.AssociationId.Value,
                     c.Status,
                     c.CreatedDate,
                     c.ImageUrl))

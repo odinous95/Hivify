@@ -6,7 +6,7 @@ public sealed record ComplaintListItem(
     Guid Id,
     string Title,
     string Description,
-    ComplaintCategory Category,
+    Guid AssociationId,
     ComplaintStatus Status,
     DateTime CreatedDate,
     string? ImageUrl,

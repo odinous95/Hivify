@@ -7,7 +7,7 @@ namespace Complaints.Domain
     public class Complaint : BaseEntity<ComplaintID>, IAggregateRoot
     {
         public UserID UserId { get; private set; }
-        public ComplaintCategory Category { get; private set; }
+        public AssociationID AssociationId { get; private set; }
         public Title Title { get; private set; }
         public Description Description { get; private set; }
         public string? ImageUrl { get; private set; }
@@ -22,24 +22,25 @@ namespace Complaints.Domain
         private Complaint(
             ComplaintID id,
             UserID userId,
-            ComplaintCategory category,
+            AssociationID associationId,
             Title title,
             Description description,
             string? imageUrl)
             : base(id)
         {
             UserId = userId;
-            Category = category;
+            AssociationId = associationId;
             Title = title;
             Description = description;
             ImageUrl = imageUrl;
             Status = ComplaintStatus.Ny;
             CreatedDate = DateTime.UtcNow;
+            AssociationId = associationId;
         }
 
         public static Complaint Create(
             UserID userId,
-            ComplaintCategory category,
+            AssociationID associationId,
             Title title,
             Description description,
             string? imageUrl = null)
@@ -47,7 +48,7 @@ namespace Complaints.Domain
             return new Complaint(
                 new ComplaintID(Guid.NewGuid()),
                 userId,
-                category,
+                associationId,
                 title,
                 description,
                 imageUrl);

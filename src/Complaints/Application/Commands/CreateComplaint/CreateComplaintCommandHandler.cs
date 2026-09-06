@@ -38,12 +38,9 @@ public sealed class CreateComplaintCommandHandler : ICommandHandler<CreateCompla
 
         var userId = _currentUser.UserId;
 
-
-
-
         var complaint = Complaint.Create(
             new UserID(userId),
-            command.Category,
+            new AssociationID(command.AssociationId),
             new Title(command.Title),
             new Description(command.Description),
             command.ImageUrl);

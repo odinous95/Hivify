@@ -33,7 +33,7 @@ public sealed class GetUserComplaintsQueryHandler
                 c.Id.Value,
                 c.Title.Value,
                 c.Description.Value,
-                c.Category,
+                c.AssociationId.Value,
                 c.Status,
                 c.CreatedDate,
                 c.ImageUrl,

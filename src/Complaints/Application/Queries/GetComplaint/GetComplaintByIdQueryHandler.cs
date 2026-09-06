@@ -29,7 +29,7 @@ public sealed class GetComplaintByIdQueryHandler
             complaint.Id.Value,
             complaint.Title.Value,
             complaint.Description.Value,
-            complaint.Category,
+            complaint.AssociationId.Value,
             complaint.Status,
             complaint.CreatedDate,
             complaint.ImageUrl,

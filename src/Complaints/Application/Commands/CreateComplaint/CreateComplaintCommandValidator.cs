@@ -6,8 +6,6 @@ public sealed class CreateComplaintCommandValidator : AbstractValidator<CreateCo
 {
     public CreateComplaintCommandValidator()
     {
-        RuleFor(x => x.Category)
-            .IsInEnum().WithMessage("Ogiltig kategori.");
 
         RuleFor(x => x.Title)
             .NotEmpty().WithMessage("Titel är obligatorisk.")
