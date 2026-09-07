@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using UserMgmt.Infrastructure.Presistence;
+using UserMgmt.Infrastructure.Identity;
 
-namespace UserMgmt.Infrastructure.Identity;
+namespace UserMgmt.Infrastructure.Presistence;
 
 public static class IdentitySeeder
 {
