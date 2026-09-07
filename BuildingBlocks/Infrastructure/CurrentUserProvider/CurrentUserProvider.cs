@@ -36,7 +36,6 @@ public sealed class CurrentUser : ICurrentUser
     public bool IsAuthenticated =>
         _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true;
 
-    Guid ICurrentUser.UserId => throw new NotImplementedException();
 
     public bool IsInRole(string role) =>
         _httpContextAccessor.HttpContext?.User?.IsInRole(role) ?? false;
