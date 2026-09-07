@@ -2,9 +2,7 @@ using BuildingBlocks.ApplicationPorts.CurrentUserProvider;
 using BuildingBlocks.ApplicationPorts.Messeging;
 using Complaints.Application.Contracts;
 using Complaints.Domain;
-using FluentValidation;
 using SharedKernel.ValuesObjects;
-using UserMgmt.Application.Contracts;
 
 namespace Complaints.Application.Commands.CreateComplaint;
 
@@ -12,24 +10,19 @@ public sealed class CreateComplaintCommandHandler : ICommandHandler<CreateCompla
 {
     private readonly IComplaintRepo _complaintRepository;
     private readonly ICurrentUser _currentUser;
-    private readonly IValidator<CreateComplaintCommand> _validator;
 
     public CreateComplaintCommandHandler(
         IComplaintRepo complaintRepository,
-        IUserDirectory userRepository,
-        ICurrentUser currentUser,
-        IValidator<CreateComplaintCommand> validator)
+        ICurrentUser currentUser
+    )
     {
         _complaintRepository = complaintRepository;
         _currentUser = currentUser;
-        _validator = validator;
     }
 
     public async Task<Guid> Handle(CreateComplaintCommand command, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(command);
-
-        await _validator.ValidateAndThrowAsync(command, cancellationToken);
 
         if (!_currentUser.IsAuthenticated || _currentUser.UserId == Guid.Empty)
         {

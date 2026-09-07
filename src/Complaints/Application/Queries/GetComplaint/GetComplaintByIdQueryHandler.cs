@@ -28,9 +28,9 @@ public sealed class GetComplaintByIdQueryHandler
 
         return new ComplaintListItem(
             complaint.Id.Value,
+            complaint.AssociationId.Value,
             complaint.Title.Value,
             complaint.Description.Value,
-            complaint.AssociationId.Value,
             complaint.Status,
             complaint.CreatedDate,
             complaint.ImageUrl,

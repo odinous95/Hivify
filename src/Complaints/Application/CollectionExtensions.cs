@@ -3,7 +3,6 @@ using Complaints.Application.Commands.CreateComplaint;
 using Complaints.Application.Commands.UpdateComplaintStatus;
 using Complaints.Application.DTOs;
 using Complaints.Application.Queries.GetComplaint;
-using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Complaints.Application;
@@ -21,9 +20,7 @@ public static class CollectionExtensions
         services.AddScoped<IQueryHandler<GetUserComplaintsQuery, IReadOnlyList<ComplaintListItem>>, GetUserComplaintsQueryHandler>();
         services.AddScoped<IQueryHandler<GetAllComplaintsQuery, IReadOnlyList<ComplaintListItem>>, GetAllComplaintsQueryHandler>();
 
-        // Validators
-        services.AddScoped<IValidator<CreateComplaintCommand>, CreateComplaintCommandValidator>();
-        services.AddScoped<IValidator<UpdateComplaintStatusCommand>, UpdateComplaintStatusCommandValidator>();
+
 
         return services;
     }

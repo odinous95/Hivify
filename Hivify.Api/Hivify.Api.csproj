@@ -39,4 +39,9 @@
 		<ProjectReference Include="..\src\UserMgmt\UserMgmt.Infrastructure\UserMgmt.Infrastructure.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Controllers\Associations\Responses\" />
+	  <Folder Include="Controllers\Associations\Requests\" />
+	</ItemGroup>
+
 </Project>

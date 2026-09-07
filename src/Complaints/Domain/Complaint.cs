@@ -33,7 +33,7 @@ namespace Complaints.Domain
             Title = title;
             Description = description;
             ImageUrl = imageUrl;
-            Status = ComplaintStatus.Ny;
+            Status = ComplaintStatus.New;
             CreatedDate = DateTime.UtcNow;
             AssociationId = associationId;
         }
@@ -74,7 +74,7 @@ namespace Complaints.Domain
             Status = newStatus;
             UpdatedDate = DateTime.UtcNow;
 
-            if (newStatus == ComplaintStatus.Löst)
+            if (newStatus == ComplaintStatus.Resolved)
             {
                 ResolvedDate = DateTime.UtcNow;
             }

@@ -2,7 +2,6 @@ using BuildingBlocks.ApplicationPorts.CurrentUserProvider;
 using BuildingBlocks.ApplicationPorts.Messeging;
 using Complaints.Application.Contracts;
 using Complaints.Domain;
-using FluentValidation;
 
 namespace Complaints.Application.Commands.UpdateComplaintStatus;
 
@@ -11,16 +10,16 @@ public sealed class UpdateComplaintStatusCommandHandler
 {
     private readonly IComplaintRepo _complaintRepository;
     private readonly ICurrentUser _currentUser;
-    private readonly IValidator<UpdateComplaintStatusCommand> _validator;
+
 
     public UpdateComplaintStatusCommandHandler(
         IComplaintRepo complaintRepository,
-        ICurrentUser currentUser,
-        IValidator<UpdateComplaintStatusCommand> validator)
+        ICurrentUser currentUser
+       )
     {
         _complaintRepository = complaintRepository;
         _currentUser = currentUser;
-        _validator = validator;
+
     }
 
     public async Task<bool> Handle(
@@ -29,7 +28,6 @@ public sealed class UpdateComplaintStatusCommandHandler
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        await _validator.ValidateAndThrowAsync(command, cancellationToken);
 
         // Authorization – endast admin
         if (!_currentUser.IsInRole("Admin"))

@@ -5,8 +5,7 @@ using Complaints.Application.DTOs;
 
 namespace Complaints.Application.Queries.GetComplaint
 {
-    public sealed class GetAllComplaintsQueryHandler
-        : IQueryHandler<GetAllComplaintsQuery, IReadOnlyList<ComplaintListItem>>
+    public sealed class GetAllComplaintsQueryHandler : IQueryHandler<GetAllComplaintsQuery, IReadOnlyList<ComplaintListItem>>
     {
         private readonly IComplaintRepo _complaintRepository;
 
@@ -25,9 +24,9 @@ namespace Complaints.Application.Queries.GetComplaint
                 .OrderByDescending(c => c.CreatedDate)
                 .Select(c => new ComplaintListItem(
                     c.Id.Value,
+                    c.AssociationId.Value,
                     c.Title.Value,
                     c.Description.Value,
-                    c.AssociationId.Value,
                     c.Status,
                     c.CreatedDate,
                     c.ImageUrl))

@@ -3,10 +3,12 @@ using BuildingBlocks.ApplicationPorts.Messeging;
 using Complaints.Application.Commands.CreateComplaint;
 using Complaints.Application.Commands.UpdateComplaintStatus;
 using Complaints.Application.Queries.GetComplaint;
-using Complaints.Domain;
+using Hivify.Api.Controllers.Complaints.Mappers;
+using Hivify.Api.Controllers.Complaints.Requests;
+using Hivify.Api.Controllers.Complaints.Responses;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Complaints.Api.Controllers.Complaints;
+namespace Hivify.Api.Controllers.Complaints;
 
 [ApiController]
 [Route("api/complaints")]
@@ -24,35 +26,39 @@ public sealed class ComplaintsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetComplaints(
+    public async Task<ActionResult<IReadOnlyCollection<GetComplaintResponse>>> GetComplaints(
         CancellationToken cancellationToken)
     {
-        var result = await _querySender.Send(
+        var complaints = await _querySender.Send(
             new GetAllComplaintsQuery(),
             cancellationToken);
 
-        return Ok(result);
+        var response = complaints
+            .Select(ComplaintResponseMapper.ToGetResponse)
+            .ToList();
+
+        return Ok(response);
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetComplaint(
+    public async Task<ActionResult<GetComplaintResponse>> GetComplaint(
         Guid id,
         CancellationToken cancellationToken)
     {
-        var result = await _querySender.Send(
+        var complaint = await _querySender.Send(
             new GetComplaintByIdQuery(id),
             cancellationToken);
 
-        if (result is null)
+        if (complaint is null)
             return NotFound();
 
-        return Ok(result);
+        return Ok(ComplaintResponseMapper.ToGetResponse(complaint));
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateComplaint(
-        CreateComplaintRequest request,
-        CancellationToken cancellationToken)
+    public async Task<ActionResult<CreatedComplaintResponse>> CreateComplaint(
+       CreateComplaintRequest request,
+       CancellationToken cancellationToken)
     {
         var command = new CreateComplaintCommand(
             request.AssociationId,
@@ -67,18 +73,18 @@ public sealed class ComplaintsController : ControllerBase
         return CreatedAtAction(
             nameof(GetComplaint),
             new { id },
-            id);
+            new CreatedComplaintResponse(id));
     }
 
     [HttpPut("{id:guid}/status")]
     public async Task<IActionResult> UpdateComplaintStatus(
-        Guid id,
-        UpdateComplaintStatusRequest request,
-        CancellationToken cancellationToken)
+          Guid id,
+          UpdateComplaintStatusRequest request,
+          CancellationToken cancellationToken)
     {
         var command = new UpdateComplaintStatusCommand(
             id,
-            request.Status,
+            request.ToDomainStatus(),
             request.AdminComment);
 
         var result = await _sender.Send(
@@ -90,14 +96,4 @@ public sealed class ComplaintsController : ControllerBase
             : NotFound();
     }
 }
-
-public sealed record CreateComplaintRequest(
-    Guid AssociationId,
-    string Title,
-    string Description,
-    string? ImageUrl);
-
-public sealed record UpdateComplaintStatusRequest(
-    ComplaintStatus Status,
-    string? AdminComment);
 

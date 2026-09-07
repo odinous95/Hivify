@@ -32,13 +32,13 @@ public sealed class GetUserComplaintsQueryHandler
             .OrderByDescending(c => c.CreatedDate)
             .Select(c => new ComplaintListItem(
                 c.Id.Value,
+                c.AssociationId.Value,
                 c.Title.Value,
                 c.Description.Value,
-                c.AssociationId.Value,
                 c.Status,
                 c.CreatedDate,
                 c.ImageUrl,
-                 c.AdminComment))
+                c.AdminComment))
             .ToList();
     }
 }
