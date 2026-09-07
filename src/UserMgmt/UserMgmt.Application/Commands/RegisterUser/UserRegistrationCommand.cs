@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.ApplicationPorts.Messeging;
 
-namespace UserMgmt.Application.Commands;
+namespace UserMgmt.Application.Commands.RegisterUser;
 
 public sealed record RegisterUserCommand(
     string Email,

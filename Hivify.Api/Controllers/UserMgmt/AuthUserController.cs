@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks.ApplicationPorts.Messeging;
 using Microsoft.AspNetCore.Mvc;
-using UserMgmt.Application.Commands;
+using UserMgmt.Application.Commands.LoginUser;
+using UserMgmt.Application.Commands.RegisterUser;
 
 [ApiController]
 [Route("api/auth")]
@@ -29,6 +30,22 @@ public sealed class AuthController : ControllerBase
         {
             userId
         });
+    }
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(
+       LoginUserCommand command,
+       CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(
+            command,
+            cancellationToken);
+
+        if (!result.Succeeded)
+        {
+            return Unauthorized(result);
+        }
+
+        return Ok(result);
     }
 }
 

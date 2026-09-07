@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.ApplicationPorts.Messeging;
 using UserMgmt.Application.Contracts;
 
-namespace UserMgmt.Application.Commands;
+namespace UserMgmt.Application.Commands.RegisterUser;
 
 public sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, Guid>
 {

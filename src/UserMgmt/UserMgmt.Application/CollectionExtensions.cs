@@ -1,6 +1,7 @@
 using BuildingBlocks.ApplicationPorts.Messeging;
 using Microsoft.Extensions.DependencyInjection;
-using UserMgmt.Application.Commands;
+using UserMgmt.Application.Commands.LoginUser;
+using UserMgmt.Application.Commands.RegisterUser;
 using UserMgmt.Application.DTOs;
 using UserMgmt.Application.Quries;
 
@@ -17,6 +18,7 @@ public static class ServiceCollectionExtensions
 
             services.AddScoped<IQueryHandler<GetUsersQuery, IReadOnlyList<UserListItem>>, GetUsersQueryHandler>();
             services.AddScoped<ICommandHandler<RegisterUserCommand, Guid>, RegisterUserCommandHandler>();
+            services.AddScoped<ICommandHandler<LoginUserCommand, LoginResultDto>, LoginUserCommandHandler>();
 
             return services;
         }

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserMgmt.Application;
 using UserMgmt.Infrastructure;
+using UserMgmt.Infrastructure.Presistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,7 +79,7 @@ builder.Services.AddAssociationInfrastructure(connectionString);
 #endregion
 
 
-#region AI
+#region AI Services
 
 builder.Services.AddHivifyAIServices();
 
@@ -87,6 +88,10 @@ builder.Services.AddHivifyAIServices();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    await IdentitySeeder.SeedAsync(scope.ServiceProvider);
+}
 
 #region HTTP Pipeline
 
