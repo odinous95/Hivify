@@ -1,15 +1,18 @@
 ﻿using Association.Application.Commands.AddAssociation;
 using Association.Application.Commands.RemoveStaffMember;
-using Association.Application.Queries.GetAssociation;
-using Association.Application.Queries.GetMember;
+using Association.Application.Queries.GetAssociation.AllAssociations;
+using Association.Application.Queries.GetAssociation.SingleAssociation;
+using Association.Application.Queries.GetMember.SingleMember;
 using BuildingBlocks.ApplicationPorts.Messeging;
 using Hivify.Api.Controllers.Associations.Requests;
 using Hivify.Api.Controllers.Associations.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hivify.Api.Controllers.Associations;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("api/associations")]
 public sealed class AssociationsController : ControllerBase
 {
@@ -24,6 +27,7 @@ public sealed class AssociationsController : ControllerBase
         _querySender = querySender;
     }
 
+
     [HttpGet]
     public async Task<IActionResult> GetAssociations(
         CancellationToken cancellationToken)
@@ -34,6 +38,8 @@ public sealed class AssociationsController : ControllerBase
 
         return Ok(result);
     }
+
+
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetAssociation(
@@ -50,13 +56,20 @@ public sealed class AssociationsController : ControllerBase
         return Ok(result);
     }
 
+
+
+
+
     [HttpPost]
     public async Task<ActionResult<CreatedAssociationRes>> CreateAssociation(CreateAssociationReq request, CancellationToken cancellationToken)
     {
         var command = new AddAssociationCommand(request.Name);
         var id = await _sender.Send(command, cancellationToken);
         var response = new CreatedAssociationRes(id.Value);
-        return CreatedAtAction(nameof(GetAssociation), new { id = id.Value }, response);
+        return CreatedAtAction(
+            nameof(GetAssociation),
+            new { id = id.Value },
+            response);
     }
 
 
@@ -134,4 +147,7 @@ public sealed class AssociationsController : ControllerBase
             ? NoContent()
             : NotFound();
     }
+
+
+
 }

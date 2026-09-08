@@ -6,6 +6,7 @@ using Complaints.Application.Queries.GetComplaint;
 using Hivify.Api.Controllers.Complaints.Mappers;
 using Hivify.Api.Controllers.Complaints.Requests;
 using Hivify.Api.Controllers.Complaints.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hivify.Api.Controllers.Complaints;
@@ -26,6 +27,7 @@ public sealed class ComplaintsController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<IReadOnlyCollection<GetComplaintResponse>>> GetComplaints(
         CancellationToken cancellationToken)
     {
@@ -41,6 +43,7 @@ public sealed class ComplaintsController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<GetComplaintResponse>> GetComplaint(
         Guid id,
         CancellationToken cancellationToken)
@@ -77,6 +80,7 @@ public sealed class ComplaintsController : ControllerBase
     }
 
     [HttpPut("{id:guid}/status")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateComplaintStatus(
           Guid id,
           UpdateComplaintStatusRequest request,
