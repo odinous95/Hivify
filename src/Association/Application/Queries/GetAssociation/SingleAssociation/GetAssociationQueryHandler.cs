@@ -1,6 +1,6 @@
 using Association.Application.Contracts;
 using Association.Application.DTOs;
-using Association.Application.Queries.GetAssociation;
+using Association.Application.Queries.GetAssociation.SingleAssociation;
 using Association.Domain.Associations;
 using BuildingBlocks.ApplicationPorts.Messeging;
 
