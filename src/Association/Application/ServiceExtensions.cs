@@ -4,7 +4,6 @@ using Association.Application.Commands.RemoveStaffMember;
 using Association.Application.Commands.UpdateStaffMemberRole;
 using Association.Application.DTOs;
 using Association.Application.Queries.GetAssociation;
-using Association.Application.Queries.GetAssociations;
 using Association.Domain.Associations;
 using Association.Domain.Members;
 using BuildingBlocks.ApplicationPorts.Messeging;

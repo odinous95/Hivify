@@ -2,7 +2,7 @@ using Association.Application.Contracts;
 using Association.Application.DTOs;
 using BuildingBlocks.ApplicationPorts.Messeging;
 
-namespace Association.Application.Queries.GetAssociations;
+namespace Association.Application.Queries.GetAssociation;
 
 public sealed class GetAssociationsQueryHandler
     : IQueryHandler<
