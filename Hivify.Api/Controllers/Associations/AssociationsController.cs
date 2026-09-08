@@ -1,8 +1,10 @@
 ﻿using Association.Application.Commands.AddAssociation;
 using Association.Application.Commands.RemoveStaffMember;
 using Association.Application.Queries.GetAssociation;
-using Association.Application.Queries.GetAssociations;
+using Association.Application.Queries.GetMember;
 using BuildingBlocks.ApplicationPorts.Messeging;
+using Hivify.Api.Controllers.Associations.Requests;
+using Hivify.Api.Controllers.Associations.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hivify.Api.Controllers.Associations;
@@ -49,32 +51,72 @@ public sealed class AssociationsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAssociation(
-        AddAssociationCommand command,
-        CancellationToken cancellationToken)
+    public async Task<ActionResult<CreatedAssociationRes>> CreateAssociation(CreateAssociationReq request, CancellationToken cancellationToken)
     {
-        var id = await _sender.Send(
-            command,
-            cancellationToken);
-
-        return CreatedAtAction(
-            nameof(GetAssociation),
-            new { id = id.Value },
-            id);
+        var command = new AddAssociationCommand(request.Name);
+        var id = await _sender.Send(command, cancellationToken);
+        var response = new CreatedAssociationRes(id.Value);
+        return CreatedAtAction(nameof(GetAssociation), new { id = id.Value }, response);
     }
 
-    [HttpPost("{associationId:guid}/members")]
-    public async Task<IActionResult> AddMember(
+
+
+
+
+    // memeber management endpoints
+
+
+    [HttpGet("{associationId:guid}/members/{memberId:guid}")]
+    public async Task<IActionResult> GetMember(
         Guid associationId,
-        AddStaffMemberCommand command,
+        Guid memberId,
         CancellationToken cancellationToken)
     {
+        var result = await _querySender.Send(
+            new GetSingleMemberQuery(associationId, memberId),
+            cancellationToken);
+
+        if (result is null)
+            return NotFound();
+
+        return Ok(result);
+    }
+
+
+
+
+
+    [HttpPost("{associationId:guid}/members")]
+    public async Task<ActionResult<CreatedAssociationMemberRes>> AddMember(Guid associationId,
+       CreateAssociationMemberReq request,
+       CancellationToken cancellationToken)
+    {
+        var command = new AddStaffMemberCommand(
+            associationId,
+            request.UserId,
+            request.FullName,
+            request.Email,
+            request.Role);
+
         var memberId = await _sender.Send(
             command,
             cancellationToken);
 
-        return Ok(memberId);
+        var response = new CreatedAssociationMemberRes(memberId.Value);
+
+        return CreatedAtAction(
+        nameof(GetMember),
+        new
+        {
+            associationId,
+            memberId = memberId.Value
+        },
+        response);
     }
+
+
+
+
 
     [HttpDelete("{associationId:guid}/members/{memberId:guid}")]
     public async Task<IActionResult> RemoveMember(
