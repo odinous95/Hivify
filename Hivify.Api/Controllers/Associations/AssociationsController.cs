@@ -2,6 +2,7 @@
 using Association.Application.Commands.RemoveStaffMember;
 using Association.Application.Queries.GetAssociation.AllAssociations;
 using Association.Application.Queries.GetAssociation.SingleAssociation;
+using Association.Application.Queries.GetMember.AllMembers;
 using Association.Application.Queries.GetMember.SingleMember;
 using BuildingBlocks.ApplicationPorts.Messeging;
 using Hivify.Api.Controllers.Associations.Requests;
@@ -127,6 +128,17 @@ public sealed class AssociationsController : ControllerBase
         response);
     }
 
+
+    [HttpGet("{associationId:guid}/members")]
+    public async Task<IActionResult> GetMembers(
+        Guid associationId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _querySender.Send(
+            new GetMembersQuery(associationId),
+            cancellationToken);
+        return Ok(result);
+    }
 
 
 
