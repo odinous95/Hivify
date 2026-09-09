@@ -1,7 +1,6 @@
 ﻿using BuildingBlocks.ApplicationPorts.Messeging;
 using Feeds.Application.Contracts;
 using Feeds.Domain.Feeds;
-using FluentValidation;
 using SharedKernel.ValuesObjects;
 
 namespace Feeds.Application.Commands.UpdateFeed;
@@ -10,14 +9,10 @@ public sealed class UpdateFeedCommandHandler
     : ICommandHandler<UpdateFeedCommand, bool>
 {
     private readonly IFeedRepo _feedRepository;
-    private readonly IValidator<UpdateFeedCommand> _validator;
 
-    public UpdateFeedCommandHandler(
-        IFeedRepo feedRepository,
-        IValidator<UpdateFeedCommand> validator)
+    public UpdateFeedCommandHandler(IFeedRepo feedRepository)
     {
         _feedRepository = feedRepository;
-        _validator = validator;
     }
 
     public async Task<bool> Handle(
@@ -25,10 +20,6 @@ public sealed class UpdateFeedCommandHandler
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(command);
-
-        await _validator.ValidateAndThrowAsync(
-            command,
-            cancellationToken);
 
         var feed = await _feedRepository.GetByIdAsync(
             new FeedID(command.FeedId),

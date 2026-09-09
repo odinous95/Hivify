@@ -2,7 +2,6 @@
 using BuildingBlocks.ApplicationPorts.Messeging;
 using Feeds.Application.Contracts;
 using Feeds.Domain.Feeds;
-using FluentValidation;
 using SharedKernel.ValuesObjects;
 namespace Feeds.Application.Commands.CreateFeed;
 
@@ -11,16 +10,13 @@ public sealed class CreateFeedCommandHandler
 {
     private readonly IFeedRepo _feedRepository;
     private readonly ICurrentUser _currentUser;
-    private readonly IValidator<CreateFeedCommand> _validator;
 
     public CreateFeedCommandHandler(
         IFeedRepo feedRepository,
-        ICurrentUser currentUser,
-        IValidator<CreateFeedCommand> validator)
+        ICurrentUser currentUser)
     {
         _feedRepository = feedRepository;
         _currentUser = currentUser;
-        _validator = validator;
     }
 
     public async Task<Guid> Handle(
@@ -28,10 +24,6 @@ public sealed class CreateFeedCommandHandler
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(command);
-
-        await _validator.ValidateAndThrowAsync(
-            command,
-            cancellationToken);
 
         if (!_currentUser.IsInRole("Admin") || _currentUser.UserId == Guid.Empty)
         {
