@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.ApplicationPorts.Messeging;
+using Hivify.Api.Controllers.UserMgmt.Requests;
 using Microsoft.AspNetCore.Mvc;
 using UserMgmt.Application.Commands.LoginUser;
 using UserMgmt.Application.Commands.RegisterUser;
@@ -16,7 +17,7 @@ public sealed class AuthController : ControllerBase
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(
-        RegisterUserRequest request,
+        RegisterUserReq request,
         CancellationToken cancellationToken)
     {
         var userId = await _sender.Send(
@@ -33,11 +34,15 @@ public sealed class AuthController : ControllerBase
     }
     [HttpPost("login")]
     public async Task<IActionResult> Login(
-       LoginUserCommand command,
+       LoginUserReq request,
        CancellationToken cancellationToken)
     {
         var result = await _sender.Send(
-            command,
+            new LoginUserCommand(
+                request.Email,
+                request.Password,
+                request.RememberMe
+                ),
             cancellationToken);
 
         if (!result.Succeeded)
@@ -49,7 +54,3 @@ public sealed class AuthController : ControllerBase
     }
 }
 
-public sealed record RegisterUserRequest(
-    string Email,
-    string Password,
-    string FullName);
