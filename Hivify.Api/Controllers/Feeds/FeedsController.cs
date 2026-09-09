@@ -3,6 +3,9 @@ using BuildingBlocks.ApplicationPorts.Messeging;
 using Feeds.Application.Commands.CreateFeed;
 using Feeds.Application.Commands.UpdateFeed;
 using Feeds.Application.Queries.GetFeeds;
+using Feeds.Application.Queries.GetSingleFeed;
+using Hivify.Api.Controllers.Feeds.Requests;
+using Hivify.Api.Controllers.Feeds.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hivify.Api.Controllers.Feeds;
@@ -23,61 +26,91 @@ public sealed class FeedsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(
+    public async Task<ActionResult<IReadOnlyList<GetFeedRes>>> GetAll(
+        CancellationToken cancellationToken)
+    {
+        var result = await _querySender.Send(new GetFeedsQuery(), cancellationToken);
+
+        var response = result
+            .Select(feed => new GetFeedRes(
+                feed.Id,
+                feed.Title,
+                feed.Content,
+                feed.CreatedDate))
+            .ToList();
+
+        return Ok(response);
+    }
+
+    [HttpGet("{feedId:guid}")]
+    public async Task<ActionResult<GetFeedRes>> GetById(
+        Guid feedId,
         CancellationToken cancellationToken)
     {
         var result = await _querySender.Send(
-            new GetFeedsQuery(),
+            new GetSingleFeedQuery(feedId),
             cancellationToken);
 
-        return Ok(result);
+        if (result is null)
+        {
+            return NotFound();
+        }
+
+        var response = new GetFeedRes(
+            result.Id,
+            result.Title,
+            result.Content,
+            result.CreatedDate);
+
+        return Ok(response);
     }
 
-
-
     [HttpPost]
-    public async Task<IActionResult> Create(
+    public async Task<ActionResult<GetFeedRes>> Create(
         CreateFeedRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new CreateFeedCommand(
-            request.Title,
-            request.Description);
-
         var feedId = await _sender.Send(
-            command,
+            new CreateFeedCommand(
+                request.Title,
+                request.Description),
             cancellationToken);
-        return CreatedAtAction(
-            nameof(GetAll),
-            new { feedId },
-            null);
 
+        var result = await _querySender.Send(
+            new GetSingleFeedQuery(feedId),
+            cancellationToken);
+
+        if (result is null)
+        {
+            return NotFound();
+        }
+
+        var response = new GetFeedRes(
+            result.Id,
+            result.Title,
+            result.Content,
+            result.CreatedDate);
+
+        return CreatedAtAction(
+            nameof(GetById),
+            new { feedId },
+            response);
     }
 
     [HttpPut("{feedId:guid}")]
     public async Task<IActionResult> Update(
-        Guid feedId,
-        UpdateFeedRequest request,
-        CancellationToken cancellationToken)
+       Guid feedId,
+       UpdateFeedRequest request,
+       CancellationToken cancellationToken)
     {
-        var command = new UpdateFeedCommand(
-            feedId,
-            request.Title,
-            request.Description);
-
         await _sender.Send(
-            command,
+            new UpdateFeedCommand(
+                feedId,
+                request.Title,
+                request.Description),
             cancellationToken);
 
         return NoContent();
     }
 }
-
-public sealed record CreateFeedRequest(
-    string Title,
-    string Description);
-
-public sealed record UpdateFeedRequest(
-    string Title,
-    string Description);
 
