@@ -30,7 +30,7 @@ public class Member : BaseEntity<MemberID>
     }
 
 
-    public static Member Create(AssociationID associationId, UserID userId, Name fullName, Email email, MemberRole role)
+    internal static Member Create(AssociationID associationId, UserID userId, Name fullName, Email email, MemberRole role)
     {
         return new Member(
             new MemberID(Guid.NewGuid()),
@@ -40,7 +40,7 @@ public class Member : BaseEntity<MemberID>
             email,
             role);
     }
-    public void ChangeRole(MemberRole role)
+    internal void ChangeRole(MemberRole role)
     {
         if (DeletedAt != null)
         {
@@ -52,7 +52,7 @@ public class Member : BaseEntity<MemberID>
     }
 
 
-    public void Delete()
+    internal void Delete()
     {
         DeletedAt = DateTime.UtcNow;
     }
