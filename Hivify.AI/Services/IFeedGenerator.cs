@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.ApplicationPorts.AI.Services
+﻿namespace Hivify.AI.Services
 {
     public interface IFeedGenerator
     {

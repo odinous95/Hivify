@@ -1,4 +1,3 @@
-using BuildingBlocks.ApplicationPorts.AI.Services;
 using Microsoft.Extensions.AI;
 using System.Text.Json;
 
