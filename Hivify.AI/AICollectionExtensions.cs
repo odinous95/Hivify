@@ -1,5 +1,5 @@
 using Hivify.AI.Agents;
-using Hivify.AI.Services;
+using Hivify.AI.Services.FeedGenerator;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using OllamaSharp;

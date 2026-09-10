@@ -1,4 +1,4 @@
-﻿namespace Hivify.AI.Services
+﻿namespace Hivify.AI.Services.FeedGenerator
 {
     public interface IFeedGenerator
     {

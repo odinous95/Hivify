@@ -1,7 +1,7 @@
 using Microsoft.Extensions.AI;
 using System.Text.Json;
 
-namespace Hivify.AI.Services;
+namespace Hivify.AI.Services.FeedGenerator;
 
 public sealed class FeedGenerator : IFeedGenerator
 {
