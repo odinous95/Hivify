@@ -1,5 +1,6 @@
 ﻿
 using BuildingBlocks.ApplicationPorts.Messeging;
+using Hivify.Api.Controllers.Houses.Requests;
 using Houses.Application.Commands.AddTenant;
 using Houses.Application.Commands.CreateHouse;
 using Houses.Application.Commands.DeleteTenant;
@@ -155,18 +156,8 @@ public sealed class HousesController : ControllerBase
     }
 }
 
-public sealed record CreateHouseRequest(
-    string Address,
-    string HouseNumber,
-    string PostalCode);
 
-public sealed record UpdateHouseRequest(
-    string Address,
-    string HouseNumber,
-    string PostalCode);
 
-public sealed record AddTenantRequest(
-    Guid UserId,
-    string Email,
-    string FullName,
-    string PhoneNumber);
+
+
+
